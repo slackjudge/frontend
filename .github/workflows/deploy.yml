@@ -1,0 +1,79 @@
+# ============================================================================
+# Frontend Deploy Workflow
+# ============================================================================
+# 이 파일을 frontend 레포지토리의 .github/workflows/deploy.yml 로 복사하세요
+#
+# GitHub Secrets (Settings > Secrets and variables > Actions > Secrets):
+#   - AWS_ACCESS_KEY_ID: AWS IAM Access Key
+#   - AWS_SECRET_ACCESS_KEY: AWS IAM Secret Key
+#
+# GitHub Variables (Settings > Secrets and variables > Actions > Variables):
+#   - S3_BUCKET_NAME: S3 버킷 이름 (예: bj-ranking-frontend-abc123)
+#   - DOMAIN_NAME: 서비스 도메인 (예: example.com)
+# ============================================================================
+
+name: Deploy Frontend to S3
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-northeast-2
+  NODE_VERSION: '20'
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_URL: https://${{ vars.DOMAIN_NAME }}/api
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync dist/ s3://${{ vars.S3_BUCKET_NAME }} \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "index.html" \
+            --exclude "*.json"
+
+          # index.html과 JSON 파일은 캐시하지 않음
+          aws s3 cp dist/index.html s3://${{ vars.S3_BUCKET_NAME }}/index.html \
+            --cache-control "no-cache, no-store, must-revalidate"
+
+          # JSON 파일들도 캐시하지 않음 (manifest 등)
+          aws s3 sync dist/ s3://${{ vars.S3_BUCKET_NAME }} \
+            --exclude "*" \
+            --include "*.json" \
+            --cache-control "no-cache, no-store, must-revalidate"
+
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **S3 Bucket**: ${{ vars.S3_BUCKET_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Domain**: https://${{ vars.DOMAIN_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
