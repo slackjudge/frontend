@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate, useRoutes } from 'react-router-dom';
-import subLogo from '../../../assets/images/sub_logo.png';
+import { useNavigate } from 'react-router-dom';
+import subLogo from '../../assets/images/sub_logo.png';
 
 export default function Header() {
     const labels = [
