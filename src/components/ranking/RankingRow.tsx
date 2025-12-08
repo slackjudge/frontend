@@ -1,5 +1,3 @@
-import React from "react";
-
 interface RankingRowProps {
   row: {
     rank: number;
