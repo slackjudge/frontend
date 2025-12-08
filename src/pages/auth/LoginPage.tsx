@@ -1,10 +1,13 @@
 import SlackLoginButton from "../../components/signup/SlackLoginButton";
 import mainLogo from "../../assets/images/main_logo.png";
 
+export const SLACK_CLIENT_ID = import.meta.env.VITE_SLACK_CLIENT_ID;
+export const SLACK_REDIRECT_URI = import.meta.env.VITE_SLACK_REDIRECT_URI;
+
 export default function LoginPage() {
+    
   const handleSlackLogin = () => {
-    window.location.href =
-      "https://slack.com/openid/connect/authorize?scope=email openid profile&client_id=10009236679351.10028267462772&redirect_uri=https://api.slackjudge.store/oauth/slack/callback&response_type=code";
+    window.location.href = `https://slack.com/openid/connect/authorize?scope=email openid profile&client_id=${SLACK_CLIENT_ID}&redirect_uri=${SLACK_REDIRECT_URI}&response_type=code`
   };
 
   return (
