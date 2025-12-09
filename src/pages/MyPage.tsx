@@ -1,96 +1,128 @@
-import { useState } from "react";
-import Calendar from "../components/common/Calendar"; // 상대경로 수정
-import { tierMap } from "../constants/tierMap";
+import { useState, useEffect, useCallback } from "react";
+import { getTierImageUrl } from "../constants/tierMap";
+// 유틸리티 함수
+import { formatDateToISO, getYearMonth } from "../utils/dateUtils";
+
+//컴포넌트 import 
+import HeatMapCalendar from "../components/mypage/HeatMapCalendar";
 import DailySummary from "../components/mypage/DailySummary";
 import ProblemListModal from "../components/mypage/ProblemListModal";
-import { Problem } from "../types/mypage";
+
+// 타입 및 Mock 함수
+import { MyPageResponse } from "../types/mypage";
+import { getMockDashboard } from "../mock/mypage/myPageData";
 
 export default function MyPage() {
-    const [date, setDate] = useState(new Date());
-    const [period, setPeriod] = useState<"day" | "week" | "month">("day");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  // 상태 관리
+  //data: 프로필, 잔디, 선택한 상세정보가 포함된 전체 데이터 
+  const [data, setData] = useState<MyPageResponse["response"] | null>(null); 
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    //TODO: 추후 API 연동시 실제 사용자 데이터로 바꾸기 
-    const userData ={
-        name: "홍길동", 
-        tier: "bronze_1",
-        solvedCount: 7, 
-        bojId: "hong123",
-        team: "프론트엔드 대면반",
-        totalScore: 100,
-        rank: 1,
-        maxDifficulty: 12, // 숫자 level (0-30)
-    };
+  // 데이터 로드 함수 (useCallback으로 메모이제이션)
+  const loadData =  useCallback(async (date: Date, dateStr?: string): Promise<void> => {
+    const { year, month } = getYearMonth(date);
+    const result = getMockDashboard(year, month, dateStr);
+    setData(result.response);
+  }, []);
 
-    // 테스트용 더미 문제 데이터
-    const testProblems: Problem[] = [
-        { title: "A+B", tierLevel: 1, link: "https://www.acmicpc.net/problem/1000" },
-        { title: "A-B", tierLevel: 2, link: "https://www.acmicpc.net/problem/1001" },
-        { title: "A×B", tierLevel: 3, link: "https://www.acmicpc.net/problem/10998" },
-        { title: "Hello World", tierLevel: 4, link: "https://www.acmicpc.net/problem/2557" },
-        { title: "두 수 비교하기", tierLevel: 5, link: "https://www.acmicpc.net/problem/1330" },
-        { title: "시험 성적", tierLevel: 6, link: "https://www.acmicpc.net/problem/9498" },
-        { title: "윤년", tierLevel: 7, link: "https://www.acmicpc.net/problem/2753" },
-    ]; 
+  // 초기 진입 
+  useEffect(() => {
+    const today = new Date();
+    loadData(today); 
+  }, [loadData]);
 
-    return (
-        <div className="flex w-full max-w-7xl mx-auto gap-6 px-6">
-            {/* 좌측 영역 - 캘린더 */}
-            <div className="w-[320px] flex-shrink-0">
-                <div className="sticky top-24">
-                    <Calendar
-                        date={date}
-                        period={period}
-                        onDateChange={setDate}
-                    />
-                </div>
-            </div>
+  // 날짜 클릭 핸들러 
+  const handleDateClick = useCallback((clickedDate: Date): void => {
+    setSelectedDate(clickedDate);
+    const dateStr = formatDateToISO(clickedDate);
+    loadData(clickedDate, dateStr);
+  }, [loadData]);
 
-            {/* 우측 영역 - 요약 및 프로필 */}
-            <div className="flex-1 flex flex-col gap-6">
-                {/* 상단 프로필 영역 - 작은 헤더 형태 */}
-                <div className="flex items-center gap-3">
-                    {/* 티어 이미지 */}
-                    <img
-                        src={tierMap[userData.tier]}
-                        alt={`${userData.tier} 티어`}
-                        className="w-12 h-12"
-                    />
-                    {/* 사용자 이름 및 ID */}
-                    <div>
-                        <h2 className="text-lg font-semibold text-gray-800">
-                            {userData.name}
-                        </h2>
-                        <p className="text-sm text-gray-600">
-                            {userData.bojId}
-                        </p>
-                    </div>
-                </div>
+  // 월 변경 핸들러
+  const handleMonthChange = useCallback((newDate: Date): void => {
+    loadData(newDate);
+  }, [loadData]);
 
-                {/* DailySummary 컴포넌트로 통계 카드 영역 교체 */}
-                <DailySummary
-                    data={{
-                        date: date.toISOString().split('T')[0],
-                        dailyScore: userData.totalScore,
-                        dailyRank: userData.rank,
-                        solvedCount: userData.solvedCount,
-                        maxDifficulty: userData.maxDifficulty, // 숫자 level 그대로 전달
-                        problems: testProblems
-                    }}
-                    onCountClick={() => {
-                        setIsModalOpen(true);
-                    }}
-                    className="w-full"
-                />
-            </div>
+  // 모달 핸들러
+  const handleOpenModal = useCallback((): void => {
+    setIsModalOpen(true);
+  }, []);
 
-            {/* 문제 목록 모달 */}
-            <ProblemListModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                date={date.toISOString().split('T')[0]}
-                problems={testProblems}
+  const handleCloseModal = useCallback((): void => {
+    setIsModalOpen(false);
+  }, []);
+
+   // 로딩 중 UI
+  if (!data) {
+    return <div className="flex justify-center p-20 text-gray-500">Loading...</div>;
+  }
+
+  const { profile, grass, selectedDateDetail } = data;
+
+
+
+  return (
+    // [레이아웃] 전체 페이지 배경 (회색)
+    <div className="min-h-screen bg-[#F5F6F8] flex justify-center py-12 px-8 font-sans w-full">
+      
+      {/* [레이아웃] 메인 흰색 카드 (둥근 모서리 40px) */}
+      <div className="w-full max-w-[1000px] bg-white rounded-[40px] shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+        
+        {/* ---------------- 상단: 프로필 영역 (중앙 정렬) ---------------- */}
+        <div className="flex flex-col items-center justify-center pt-12 pb-8">
+          <div className="flex items-center gap-3 mb-2">
+            {/* 티어 이미지 */}
+            <img
+              src={getTierImageUrl(profile.tierLevel)}
+              alt="tier"
+              className="w-10 h-10 object-contain"
             />
+            {/* 이름 | 아이디 */}
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-2xl font-bold text-gray-900 tracking-tight">
+                {profile.username}
+              </span>
+              <span className="text-gray-300 text-xl font-light">|</span>
+              <span className="text-lg text-gray-500 font-medium">
+                {profile.baekjoonId}
+              </span>
+            </div>
+          </div>
         </div>
-    );
+
+        {/* 가로 구분선 */}
+        <div className="w-[95%] mx-auto h-[1px] bg-gray-200"></div>
+
+        {/* ---------------- 하단: 컨텐츠 영역 (좌우 분할) ---------------- */}
+        <div className="flex flex-1 min-h-[600px]">
+          
+          {/* 좌측: 캘린더 영역 (60% 너비) */}
+          <div className="w-[60%] py-12 px-8 border-r border-gray-200 flex flex-col items-center justify-start">
+            <HeatMapCalendar
+              selectedDate={selectedDate}
+              onDateChange={handleDateClick}
+              grassData={grass} // 잔디 데이터
+              onMonthChange={handleMonthChange}
+            />
+          </div>
+
+          {/* 우측: 요약 통계 영역 (40% 너비) */}
+          <DailySummary
+            data={selectedDateDetail} // 선택된 날짜의 상세 데이터
+            onCountClick={() => setIsModalOpen(true)}
+          />
+          
+        </div>
+      </div>
+
+      {/* 문제 목록 모달 */}
+      <ProblemListModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        date={selectedDateDetail.date}
+        problems={selectedDateDetail.problems}
+      />
+    </div>
+  );
 }
