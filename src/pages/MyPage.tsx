@@ -110,7 +110,7 @@ export default function MyPage() {
           {/* 우측: 요약 통계 영역 (40% 너비) */}
           <DailySummary
             data={selectedDateDetail} // 선택된 날짜의 상세 데이터
-            onCountClick={() => setIsModalOpen(true)}
+            onCountClick={handleOpenModal}
           />
           
         </div>
@@ -119,7 +119,7 @@ export default function MyPage() {
       {/* 문제 목록 모달 */}
       <ProblemListModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         date={selectedDateDetail.date}
         problems={selectedDateDetail.problems}
       />
