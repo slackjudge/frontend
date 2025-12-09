@@ -10,7 +10,7 @@ export interface Problem {
     dailyScore: number;
     dailyRank: number; //일간 순위 ( 우측 패널용)
     solvedCount: number;
-    maxTierLevel: number;
+    maxDifficulty: number;
     problems: Problem[];
   }
   
