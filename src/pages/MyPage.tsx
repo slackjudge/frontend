@@ -1,10 +1,14 @@
 import { useState } from "react";
 import Calendar from "../components/common/Calendar"; // 상대경로 수정
 import { tierMap } from "../constants/tierMap";
+import DailySummary from "../components/mypage/DailySummary";
+import ProblemListModal from "../components/mypage/ProblemListModal";
+import { Problem } from "../types/mypage";
 
 export default function MyPage() {
     const [date, setDate] = useState(new Date());
     const [period, setPeriod] = useState<"day" | "week" | "month">("day");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     //TODO: 추후 API 연동시 실제 사용자 데이터로 바꾸기 
     const userData ={
@@ -15,8 +19,19 @@ export default function MyPage() {
         team: "프론트엔드 대면반",
         totalScore: 100,
         rank: 1,
-        maxDifficulty: "G5",
-    }; 
+        maxDifficulty: 12, // 숫자 level (0-30)
+    };
+
+    // 테스트용 더미 문제 데이터
+    const testProblems: Problem[] = [
+        { title: "A+B", tierLevel: 1, link: "https://www.acmicpc.net/problem/1000" },
+        { title: "A-B", tierLevel: 2, link: "https://www.acmicpc.net/problem/1001" },
+        { title: "A×B", tierLevel: 3, link: "https://www.acmicpc.net/problem/10998" },
+        { title: "Hello World", tierLevel: 4, link: "https://www.acmicpc.net/problem/2557" },
+        { title: "두 수 비교하기", tierLevel: 5, link: "https://www.acmicpc.net/problem/1330" },
+        { title: "시험 성적", tierLevel: 6, link: "https://www.acmicpc.net/problem/9498" },
+        { title: "윤년", tierLevel: 7, link: "https://www.acmicpc.net/problem/2753" },
+    ]; 
 
     return (
         <div className="flex w-full max-w-7xl mx-auto gap-6 px-6">
@@ -52,48 +67,30 @@ export default function MyPage() {
                     </div>
                 </div>
 
-                {/* 통계 카드 영역 - 2x2 그리드 */}
-                <div className="grid grid-cols-2 gap-4">
-                    {/* 푼 문제 수 카드 */}
-                    <div className="bg-white border rounded-xl p-6 shadow-lg">
-                        <div className="text-sm text-gray-600 mb-2">
-                            푼 문제 수
-                        </div>
-                        <div className="text-3xl font-bold text-gray-800 underline">
-                            {userData.solvedCount}
-                        </div>
-                    </div>
-                    {/* 총 점수 카드 */}
-                    <div className="bg-white border rounded-xl p-6 shadow-lg">
-                        <div className="text-sm text-gray-600 mb-2">
-                            총 점수
-                        </div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {userData.totalScore}
-                        </div>
-                    </div>
-
-                    {/* 내 순위 카드 */}
-                    <div className="bg-white border rounded-xl p-6 shadow-lg">
-                        <div className="text-sm text-gray-600 mb-2">
-                            내 순위
-                        </div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {userData.rank}
-                        </div>
-                    </div>
-
-                    {/* 최고 난이도 카드 */}
-                    <div className="bg-white border rounded-xl p-6 shadow-lg">
-                        <div className="text-sm text-gray-600 mb-2">
-                            최고 난이도
-                        </div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {userData.maxDifficulty}
-                        </div>
-                    </div>
-                </div>
+                {/* DailySummary 컴포넌트로 통계 카드 영역 교체 */}
+                <DailySummary
+                    data={{
+                        date: date.toISOString().split('T')[0],
+                        dailyScore: userData.totalScore,
+                        dailyRank: userData.rank,
+                        solvedCount: userData.solvedCount,
+                        maxDifficulty: userData.maxDifficulty, // 숫자 level 그대로 전달
+                        problems: testProblems
+                    }}
+                    onCountClick={() => {
+                        setIsModalOpen(true);
+                    }}
+                    className="w-full"
+                />
             </div>
+
+            {/* 문제 목록 모달 */}
+            <ProblemListModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                date={date.toISOString().split('T')[0]}
+                problems={testProblems}
+            />
         </div>
     );
 }
