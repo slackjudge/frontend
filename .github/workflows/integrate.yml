@@ -3,6 +3,7 @@
 # ============================================================================
 # 역할:
 #   - 의존성 설치 및 캐싱
+#   - Prettier 포맷팅 체크
 #   - TypeScript 타입 체크
 #   - ESLint 정적 분석
 #   - 프로덕션 빌드 검증
@@ -51,6 +52,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run Prettier Check
+        run: npx prettier --check "src/**/*.{ts,tsx,css}"
 
       - name: Run TypeScript Check
         run: npx tsc -b --noEmit
