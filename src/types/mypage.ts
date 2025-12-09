@@ -17,7 +17,6 @@ export interface Problem {
   export interface Grass {
     date: string;
     solvedCount: number;
-    degree: number;
   }
   
   export interface Profile {
