@@ -1,0 +1,150 @@
+/* 캘린더 컨테이너 */
+.heatmap-calendar-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: Pretendard, sans-serif;
+  padding: 10px;
+}
+
+/* 1. 기본 스타일 초기화 */
+.react-calendar {
+  width: 100%;
+  background: none !important;
+  border: none !important;
+  font-family: inherit;
+  line-height: 1.125em;
+}
+
+/* 2. 네비게이션 (2025년 11월) */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  margin-bottom: 20px;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  border: none !important;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: transparent !important;
+}
+
+/* 3. 요일 헤더 (MON, TUE...) - 그리드 적용 */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 13px;
+  color: #111;
+  margin-bottom: 12px;
+  
+  /* [핵심] 요일도 7칸으로 맞춤 */
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0;
+  border: none; 
+}
+
+/* 요일 밑줄 제거 */
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+  border: none;
+}
+
+/* 4. 날짜 영역 컨테이너 - [핵심 해결책] */
+.react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr); /* 무조건 7칸씩 배치 */
+  gap: 0px; /* 타일 간 간격 */
+  width: 100%;
+}
+
+/* 5. 날짜 타일 (동그라미) 디자인 */
+.react-calendar__tile {
+  max-width: 100%;
+  height: 36px !important;
+  width: 36px !important;
+  
+  /* Flex 관련 속성 강제 조정 */
+  flex: none !important; 
+  margin: 4px auto !important; /* 중앙 정렬 */
+  
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  background: none;
+  border: none !important;
+}
+
+/* 오늘 날짜 기본 배경 제거 */
+.react-calendar__tile--now {
+  background: none !important;
+}
+
+/* Hover 효과 */
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+}
+
+/* ----------------------------------------------------
+   [히트맵 색상]
+   참조: src/constants/grassConfig.ts의 GRASS_DEGREE_CONFIG.COLORS
+   ---------------------------------------------------- */
+.grass-degree-0 {
+  /* GRASS_DEGREE_CONFIG.COLORS[0] */
+  background-color: #F3F4F6 !important;
+  color: #555 !important;
+}
+
+.grass-degree-1 {
+  /* GRASS_DEGREE_CONFIG.COLORS[1] */
+  background-color: #FCD34D !important; 
+  color: #333 !important;
+}
+
+.grass-degree-2 {
+  /* GRASS_DEGREE_CONFIG.COLORS[2] */
+  background-color: #FB923C !important;
+  color: white !important;
+}
+
+.grass-degree-3 {
+  /* GRASS_DEGREE_CONFIG.COLORS[3] */
+  background-color: #F97316 !important;
+  color: white !important;
+}
+
+/* ----------------------------------------------------
+   [선택된 날짜]
+   ---------------------------------------------------- */
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #FFFFFF !important;
+  color: #3B82F6 !important;
+  border: 2px solid #3B82F6 !important;
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.15);
+}
+
+/* 이전/다음 달 날짜 흐리게 */
+.react-calendar__month-view__days__day--neighboringMonth {
+  opacity: 0.3;
+}
