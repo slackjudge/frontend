@@ -1,0 +1,89 @@
+# ============================================================================
+# Frontend Integration Workflow
+# ============================================================================
+# 역할:
+#   - 의존성 설치 및 캐싱
+#   - TypeScript 타입 체크
+#   - ESLint 정적 분석
+#   - 프로덕션 빌드 검증
+#   - SonarCloud 코드 품질/보안 분석
+#
+# GitHub Secrets:
+#   - SONAR_TOKEN        : SonarCloud Token
+#
+# GitHub Variables:
+#   - SONAR_ORGANIZATION : SonarCloud Organization Key
+#   - SONAR_PROJECT      : SonarCloud Project Key
+# ============================================================================
+
+name: Integrate Frontend
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  integrate:
+    name: Frontend Integration Pipeline
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      actions: write
+      checks: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # SonarCloud 분석을 위해 전체 히스토리 필요
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript Check
+        run: npx tsc -b --noEmit
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT }}
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/*.test.ts,**/*.test.tsx
+            -Dsonar.typescript.tsconfigPath=tsconfig.json
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+          retention-days: 7
+
+      - name: Integration Summary
+        run: |
+          echo "## Integration Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch** : ${{ github.head_ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit** : ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node.js**: ${{ env.NODE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SonarCloud**: [View Analysis](https://sonarcloud.io/project/overview?id=${{ vars.SONAR_PROJECT }})" >> $GITHUB_STEP_SUMMARY
