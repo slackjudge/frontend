@@ -1,4 +1,4 @@
-import { TEAM_OPTIONS } from "../../constants/team";
+import { TEAM_OPTIONS } from "@/constants/team";
 import { useState } from "react";
 
 interface TeamDropdownProps {

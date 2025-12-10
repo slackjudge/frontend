@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
-import SignUpPage from './pages/auth/SignUpPage';
+import SignUpPage from '@/pages/auth/SignUpPage';
 import RankingPage from './pages/RankingPage';
 import NotificationPage from './pages/NotificationPage';
 import MyPage from './pages/MyPage';
 import Overlay from './components/common/Overlay';
 import LoginPage from './pages/auth/LoginPage';
-import SlackCallbackPage from './pages/auth/SlackCallbackPage';
+import SlackCallbackPage from '@/pages/auth/SlackCallbackPage';
 
 function App() {
 	return (

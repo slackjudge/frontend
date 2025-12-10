@@ -1,5 +1,5 @@
 import React from "react";
-import slackLogo from "../../assets/images/slack.png";
+import slackLogo from "@/assets/images/slack.png";
 
 interface Props {
   onClick: () => void;

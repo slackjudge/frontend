@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TeamDropDown from "../../components/signup/TeamDropDown"
+import TeamDropDown from "@/components/signup/TeamDropDown"
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
