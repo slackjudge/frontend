@@ -1,3 +1,4 @@
+import { TEAM_OPTIONS } from "../../constants/team";
 import { useState } from "react";
 
 interface TeamDropdownProps {
@@ -5,20 +6,8 @@ interface TeamDropdownProps {
   setTeamName: (value: string) => void;
 }
 
-interface TeamOption {
-  value: string;
-  label: string;
-}
-
 export default function TeamDropdown({ teamName, setTeamName }: TeamDropdownProps) {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const teams: TeamOption[] = [
-    { value: "FRONTEND_FACE", label: "프론트엔드 대면반" },
-    { value: "FRONTEND_NON_FACE", label: "프론트엔드 비대면반" },
-    { value: "BACKEND_FACE", label: "백엔드 대면반" },
-    { value: "BACKEND_NON_FACE", label: "백엔드 비대면반" },
-  ];
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="relative w-full">
@@ -31,7 +20,7 @@ export default function TeamDropdown({ teamName, setTeamName }: TeamDropdownProp
       >
         <span className={`text-[14px] ${teamName ? "text-black" : "text-[#C4C8CC]"}`}>
           {teamName
-            ? teams.find((t) => t.value === teamName)?.label
+            ? TEAM_OPTIONS.find((t) => t.value === teamName)?.label
             : "반을 선택해주세요."}
         </span>
         <span className="text-[#C4C8CC] text-[12px]">▾</span>
@@ -40,7 +29,7 @@ export default function TeamDropdown({ teamName, setTeamName }: TeamDropdownProp
       {/* 아래로 펼쳐지는 메뉴 */}
       {open && (
         <div className="absolute left-0 right-0 mt-1 border border-[#DADCE0] rounded-[8px] bg-white shadow z-10">
-          {teams.map((team) => (
+          {TEAM_OPTIONS.map((team) => (
             <div
               key={team.value}
               onClick={() => {
