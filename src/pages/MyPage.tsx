@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { getTierImageUrl } from "../constants/tierMap";
 // 유틸리티 함수
 import { formatDateToISO, getYearMonth } from "../utils/dateUtils";
-
+import { useFetch } from "../hooks/useFetch";
 //컴포넌트 import 
 import HeatMapCalendar from "../components/mypage/HeatMapCalendar";
 import DailySummary from "../components/mypage/DailySummary";
@@ -14,35 +14,31 @@ import { getMockDashboard } from "../mock/mypage/myPageData";
 
 export default function MyPage() {
   // 상태 관리
-  //data: 프로필, 잔디, 선택한 상세정보가 포함된 전체 데이터 
-  const [data, setData] = useState<MyPageResponse["response"] | null>(null); 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date()); 
+  const [dateStr, setDateStr] = useState<string | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // 데이터 로드 함수 (useCallback으로 메모이제이션)
-  const loadData =  useCallback(async (date: Date, dateStr?: string): Promise<void> => {
-    const { year, month } = getYearMonth(date);
-    const result = getMockDashboard(year, month, dateStr);
-    setData(result.response);
-  }, []);
-
-  // 초기 진입 
-  useEffect(() => {
-    const today = new Date();
-    loadData(today); 
-  }, [loadData]);
+  // 공통 API 훅 사용 
+  const { data, isLoading, error, refetch } = useFetch<MyPageResponse["response"]>({
+    fetchFn: async () => {
+      const { year, month } = getYearMonth(selectedDate);
+      const result = getMockDashboard(year, month, dateStr);
+      return result.response;
+    },
+    dependencies: [selectedDate, dateStr], // 날짜 변경시 재요청 
+  });
 
   // 날짜 클릭 핸들러 
   const handleDateClick = useCallback((clickedDate: Date): void => {
     setSelectedDate(clickedDate);
-    const dateStr = formatDateToISO(clickedDate);
-    loadData(clickedDate, dateStr);
-  }, [loadData]);
+    setDateStr(formatDateToISO(clickedDate)); // 날짜 클릭시 dateStr 설정 
+  }, []);
 
-  // 월 변경 핸들러
+  // 월 변경 핸들러 
   const handleMonthChange = useCallback((newDate: Date): void => {
-    loadData(newDate);
-  }, [loadData]);
+    setSelectedDate(newDate);
+    setDateStr(undefined); // 월 변경시 dateStr 초기화
+  }, []);
 
   // 모달 핸들러
   const handleOpenModal = useCallback((): void => {
@@ -53,33 +49,30 @@ export default function MyPage() {
     setIsModalOpen(false);
   }, []);
 
-   // 로딩 중 UI
-//공통 api 훅 예시
-const useFetchData = (url : string) =>{
-   const [isLoading, setIsLoading] = useState<Boolean>(false);
-   const [error,setError] = useState(null);
-   const [data,setData] = useState(null);
-   
-   useEffect(()=> {
-     const getData = async ( )=>{
-         setIsLoad(true);;
-         setError(null);
-         
-         //api 통신 로직
-         
-         //성공시 
-         setData(response.data);
-         
-         //실패시
-         setError(에러 메시지);
-         
-         //finally(공통)
-         setIsLoading(false);
-       };
-       
-       getData();
-    },[url]);
-       
+  // 로딩 중 UI
+  if (isLoading) {
+    return <div className="flex justify-center p-20 text-gray-500">Loading...</div>;
+  }
+
+  // 에러 UI 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-20 text-red-500">
+        <p>Error: {error}</p>
+        <button 
+          onClick={() => refetch()} 
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  }
+
+  // 데이터 없음 UI 
+  if (!data) {
+    return <div className="flex justify-center p-20 text-gray-500">데이터가 없습니다.</div>;
+  }
 
   const { profile, grass, selectedDateDetail } = data;
 
