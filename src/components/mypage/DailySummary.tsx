@@ -54,7 +54,9 @@ export default function DailySummary({data, onCountClick, className}: Props){
                 <div className={CARD_STYLES.BASE}>
                     <span className={CARD_STYLES.LABEL}>최고 난이도</span>
                     <div className={CARD_STYLES.TIER_CONTAINER}> 
-                        {(() => {
+                        {data.solvedCount === 0 ? (
+                            <span className={CARD_STYLES.VALUE}>-</span>
+                        ) : (() => {
                             const tierImageUrl = getTierImageUrl(data.maxDifficulty);
                             return tierImageUrl ? (
                                 <img
@@ -63,7 +65,7 @@ export default function DailySummary({data, onCountClick, className}: Props){
                                     className="h-10 w-auto object-contain drop-shadow-sm"
                                 />
                             ) : (
-                                <span className="text-4xl text-gray-300">-</span>
+                                <span className={CARD_STYLES.VALUE}>-</span>
                             );
                         })()}
                     </div>
