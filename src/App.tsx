@@ -6,6 +6,7 @@ import NotificationPage from './pages/NotificationPage';
 import MyPage from './pages/MyPage';
 import Overlay from './components/common/Overlay';
 import LoginPage from './pages/auth/LoginPage';
+import SlackCallbackPage from './pages/auth/SlackCallbackPage';
 
 function App() {
 	return (
@@ -17,6 +18,8 @@ function App() {
 				<Route path="/main/ranking" element={<RankingPage />} />
 				<Route path="/main/notification" element={<NotificationPage />} />
 				<Route path="/main/my-page" element={<MyPage />} />
+
+				<Route path="/oauth/slack/callback" element={<SlackCallbackPage />} />
 			</Routes>
 		</Overlay>
 	);
