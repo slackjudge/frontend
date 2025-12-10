@@ -23,3 +23,7 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+
+# GitHub Actions act
+.vars
+.secrets
