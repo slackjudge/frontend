@@ -54,9 +54,32 @@ export default function MyPage() {
   }, []);
 
    // 로딩 중 UI
-  if (!data) {
-    return <div className="flex justify-center p-20 text-gray-500">Loading...</div>;
-  }
+//공통 api 훅 예시
+const useFetchData = (url : string) =>{
+   const [isLoading, setIsLoading] = useState<Boolean>(false);
+   const [error,setError] = useState(null);
+   const [data,setData] = useState(null);
+   
+   useEffect(()=> {
+     const getData = async ( )=>{
+         setIsLoad(true);;
+         setError(null);
+         
+         //api 통신 로직
+         
+         //성공시 
+         setData(response.data);
+         
+         //실패시
+         setError(에러 메시지);
+         
+         //finally(공통)
+         setIsLoading(false);
+       };
+       
+       getData();
+    },[url]);
+       
 
   const { profile, grass, selectedDateDetail } = data;
 
