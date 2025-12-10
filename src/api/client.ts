@@ -1,4 +1,4 @@
-export interface ApiReponse<T> {
+export interface ApiResponse<T> {
     success: boolean;
     errorCode: string | null;
     message: string;
@@ -8,7 +8,7 @@ export interface ApiReponse<T> {
 export async function apiFetch<T>(
     path: string,
     options: RequestInit = {}
-): Promise<ApiReponse<T>> {
+): Promise<ApiResponse<T>> {
     const accessToken = localStorage.getItem("accessToken");
 
     const headers = new Headers(options.headers ?? {});
@@ -25,7 +25,7 @@ export async function apiFetch<T>(
         headers,
     });
 
-    const body: ApiReponse<T> = await res.json();
+    const body: ApiResponse<T> = await res.json();
 
     if (body.success) return body;
 
