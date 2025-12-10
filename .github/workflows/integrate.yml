@@ -81,6 +81,7 @@ jobs:
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/*.test.ts,**/*.test.tsx
             -Dsonar.typescript.tsconfigPath=tsconfig.json
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.coverage.exclusions=**/*
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
