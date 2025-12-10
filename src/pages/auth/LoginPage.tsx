@@ -1,5 +1,5 @@
-import SlackLoginButton from "../../components/signup/SlackLoginButton";
-import mainLogo from "../../assets/images/main_logo.png";
+import SlackLoginButton from "@/components/signup/SlackLoginButton";
+import mainLogo from "@/assets/images/main_logo.png";
 
 export const SLACK_CLIENT_ID = import.meta.env.VITE_SLACK_CLIENT_ID;
 export const SLACK_REDIRECT_URI = import.meta.env.VITE_SLACK_REDIRECT_URI;

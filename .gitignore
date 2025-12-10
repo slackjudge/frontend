@@ -6,6 +6,9 @@ dist
 dist-ssr
 *.local
 
+# Test
+coverage
+
 # Editor
 .vscode/*
 !.vscode/extensions.json
@@ -20,3 +23,7 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+
+# GitHub Actions act
+.vars
+.secrets
