@@ -2,6 +2,9 @@ export const tierMap = (() => {
   const groups = ["bronze", "silver", "gold", "platinum", "diamond", "ruby"];
   const map: Record<string, string> = {};
 
+  // unrated 추가 (level 0)
+  map["unrated_0"] = `/src/assets/icons/baekjoon/unrated/unrated.svg`;
+
   groups.forEach((group) => {
     for (let i = 1; i <= 5; i++) {
       const prefix = group[0]; // b, s, g, p, d, r
@@ -15,6 +18,7 @@ export const tierMap = (() => {
 /**
  * 숫자 레벨(0-30)을 티어 이미지 경로로 변환하는 함수
  * 백준 티어 시스템:
+ * - 0:  unrated 
  * - 1-5: Bronze (1=B5, 2=B4, 3=B3, 4=B2, 5=B1)
  * - 6-10: Silver (6=S5, 7=S4, 8=S3, 9=S2, 10=S1)
  * - 11-15: Gold (11=G5, 12=G4, 13=G3, 14=G2, 15=G1)
@@ -26,8 +30,13 @@ export const tierMap = (() => {
  * @returns 티어 이미지 경로 문자열
  */
 export const getTierImageUrl = (tierLevel: number): string => {
-  // 0이거나 유효하지 않은 범위면 빈 문자열 반환
-  if (tierLevel <= 0 || tierLevel > 30) {
+  // level이 0이면 unrated 반환
+  if (tierLevel === 0) {
+    return `/src/assets/icons/baekjoon/unrated/unrated.svg`;
+  }
+
+  // 유효하지 않은 범위면 빈 문자열 반환
+  if (tierLevel < 0 || tierLevel > 30) {
     return "";
   }
 
