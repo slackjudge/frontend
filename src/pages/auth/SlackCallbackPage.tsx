@@ -1,55 +1,45 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { apiFetch } from "@/api/client/httpClient";
 
 export default function SlackCallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const code = searchParams.get("code");
-
   useEffect(() => {
+    const code = searchParams.get("code");
     if (!code) return;
 
-    const sendCodeToServer = async () => {
+    (async () => {
       try {
-        const res = await fetch(`/api/oauth/login?code=${code}`, {
+        const res = await apiFetch<{
+          accessToken: string;
+          refreshToken: string;
+          registeredUser: boolean;
+        }>(`/oauth/login?code=${code}`, {
           method: "GET",
         });
 
-        const data = await res.json();
-        console.log("서버 응답:", data);
+        const { accessToken, refreshToken, registeredUser } = res.data;
 
-        if (!data.success) {
-          console.log("error")
-          // TODO: 에러 페이지나 로그인 페이지 이동 등의 처리
-          return;
-        }
-
-        const { accessToken, refreshToken, registeredUser } = data.data;
-
+        // 토큰 저장
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
 
-        if (!registeredUser) {
-          navigate("/sign-up", {replace: true})
-        } else {
-          navigate("/main/ranking", {replace: true});
-        }
-
-      } catch (e) {
-        console.error(e);
-        // TODO: 에러처리
+        // 회원가입 완료한 사용자 → 랭킹 페이지 / 신규 회원 → 회원가입 페이지
+        navigate(registeredUser ? "/main/ranking" : "/sign-up", {
+          replace: true,
+        });
+      } catch (err) {
+        console.error("Slack login error:", err);
+        navigate("/", { replace: true });
       }
-    };
-
-    sendCodeToServer();
-  }, [code, navigate]);
+    })();
+  }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Slack Callback</h1>
-      <p>받은 code: {code}</p>
-      <p>로그인 처리 중입니다...</p>
+    <div className="w-full h-screen flex items-center justify-center bg-white">
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#45539D] border-t-transparent"></div>
     </div>
   );
 }
