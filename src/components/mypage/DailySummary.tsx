@@ -8,8 +8,9 @@ interface Props{
     className?: string; // 추가 스타일링을 위한 className
 }
 
-export default function DailySummary({data, onCountClick, className}: Props){
-    //TODO: 데이터가 없을때 안전 장치 
+export default function DailySummary(
+    { data, onCountClick, className }: Readonly<Props>
+) {
     
     return(
         <div className={`${className || 'w-[40%]'} h-full p-8 flex items-center justify-center bg-white`}>

@@ -65,17 +65,28 @@ const ExternalLinkIcon = () => (
  * - 선택한 날짜에 푼 문제 목록을 표시
  * - 각 문제는 백준 링크로 연결됨
  */
-export default function ProblemListModal({ isOpen, onClose, date, problems }: ProblemListModalProps) {
+export default function ProblemListModal(
+    { isOpen, onClose, date, problems }: Readonly<ProblemListModalProps>
+) {
     if (!isOpen) return null;
 
     return (
-        <div 
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" 
+        <button
+            type="button"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
             onClick={onClose}
+            aria-label="모달 닫기 (배경)"
+            tabIndex={0}
+            style={{ outline: "none" }}
         >
             <div 
                 className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
+                onKeyDown={e => {
+                    // Prevent propagation for keyboard events just like mouse click
+                    e.stopPropagation();
+                }}
+                tabIndex={-1} // make it focusable, but not in the tab order normally
             >
                 {/* 모달 헤더 */}
                 <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
@@ -113,6 +124,6 @@ export default function ProblemListModal({ isOpen, onClose, date, problems }: Pr
                     ))}
                 </div>
             </div>
-        </div>
+        </button>
     );
 }

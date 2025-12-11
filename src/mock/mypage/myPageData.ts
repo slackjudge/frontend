@@ -12,7 +12,8 @@ const MOCK_PROFILE: Profile = {
 
 const MOCK_GRASS: Grass[] = [
     { date: "2025-12-02", solvedCount: 1 },
-    { date: "2025-12-05", solvedCount: 3 }
+    { date: "2025-12-05", solvedCount: 3 },
+    { date: "2025-12-07", solvedCount: 7 }
 ];
 //날짜별 상세 데이터 (날짜를 클릭했을때 보여줄 내용)
 const DETAILS_DB: Record<string, SelectedDateDetail> = {
@@ -55,6 +56,52 @@ const DETAILS_DB: Record<string, SelectedDateDetail> = {
             title: "알람 시계", // Bronze 3
             tierLevel: 3,
             link: "https://www.acmicpc.net/problem/2884"
+        }
+        ]
+    },
+
+    // [Case 3] 12월 7일: 다양한 난이도의 문제를 푼 날 (총 7문제)
+    "2025-12-07": {
+        date: "2025-12-07",
+        dailyScore: 45,
+        dailyRank: 1,
+        solvedCount: 7,
+        maxDifficulty: 18, // Platinum 3 (티어 레벨 18)
+        problems: [
+        {
+            title: "트리의 지름", // Platinum 3
+            tierLevel: 18,
+            link: "https://www.acmicpc.net/problem/1967"
+        },
+        {
+            title: "최단경로", // Gold 4
+            tierLevel: 12,
+            link: "https://www.acmicpc.net/problem/1753"
+        },
+        {
+            title: "숨바꼭질", // Silver 1
+            tierLevel: 10,
+            link: "https://www.acmicpc.net/problem/1697"
+        },
+        {
+            title: "좌표 정렬하기", // Silver 5
+            tierLevel: 6,
+            link: "https://www.acmicpc.net/problem/11650"
+        },
+        {
+            title: "나이순 정렬", // Silver 5
+            tierLevel: 6,
+            link: "https://www.acmicpc.net/problem/10814"
+        },
+        {
+            title: "수 정렬하기 2", // Silver 5
+            tierLevel: 6,
+            link: "https://www.acmicpc.net/problem/2751"
+        },
+        {
+            title: "최대공약수와 최소공배수", // Bronze 1
+            tierLevel: 5,
+            link: "https://www.acmicpc.net/problem/2609"
         }
         ]
     }

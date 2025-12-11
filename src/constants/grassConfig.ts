@@ -38,7 +38,7 @@ export const GRASS_DEGREE_CONFIG = {
       description: '3~5개 문제 (주황색)',
     },
     3: {
-      background: '#F97316',
+      background: '#ff6141',
       text: '#FFFFFF',
       description: '6개 이상 문제 (진한 주황색)',
     },

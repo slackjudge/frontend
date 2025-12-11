@@ -102,10 +102,10 @@
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 50%;
 }
-
 /* ----------------------------------------------------
    [히트맵 색상]
-   참조: src/constants/grassConfig.ts의 GRASS_DEGREE_CONFIG.COLORS
+   GRASS_DEGREE_CONFIG.COLORS의 값을 실제로 적용했습니다.
+   
    ---------------------------------------------------- */
 .grass-degree-0 {
   /* GRASS_DEGREE_CONFIG.COLORS[0] */
@@ -122,13 +122,13 @@
 .grass-degree-2 {
   /* GRASS_DEGREE_CONFIG.COLORS[2] */
   background-color: #FB923C !important;
-  color: white !important;
+  color: #FFFFFF !important;
 }
 
 .grass-degree-3 {
   /* GRASS_DEGREE_CONFIG.COLORS[3] */
-  background-color: #F97316 !important;
-  color: white !important;
+  background-color: #ff6141 !important;
+  color: #FFFFFF !important;
 }
 
 /* ----------------------------------------------------
@@ -138,7 +138,7 @@
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
   background: #FFFFFF !important;
-  color: #3B82F6 !important;
+  color: #1E3A8A !important;
   border: 2px solid #3B82F6 !important;
   font-weight: 800;
   box-shadow: 0 2px 4px rgba(59, 130, 246, 0.15);
