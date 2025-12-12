@@ -130,7 +130,9 @@ export default function SignUpPage() {
                 <input
                   className={`
                     w-full h-[45px] rounded-[4px] px-3 pr-10 placeholder:text-[#C4C8CC]
-                    ${idErrorMessage ? "border border-red-500" : "border border-[#DADCE0]"}
+                    ${idErrorMessage 
+                      ? "border border-red-500 animate-[shake_0.35s_ease-in-out]" 
+                      : "border border-[#DADCE0]"}
                   `}
                   placeholder="백준 ID를 입력해주세요."
                   value={baekjoonId}
