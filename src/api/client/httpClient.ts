@@ -2,6 +2,9 @@
 import { handleJwtApiError, ApiError } from "@/api/errors/errorHandler";
 import { reissueToken } from "@/api/client/reissueToken";
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export interface ApiResponse<T> {
   success: boolean;
   errorCode: string | null;
@@ -25,7 +28,10 @@ export async function apiFetch<T>(
       headers.set("Authorization", `Bearer ${accessToken}`);
     }
 
-    const res = await fetch(path, { ...options, headers });
+    const res = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers,
+    });
     return res.json() as Promise<ApiResponse<T>>;
   }
 
