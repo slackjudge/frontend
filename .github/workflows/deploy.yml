@@ -1,11 +1,12 @@
 # ============================================================================
 # Frontend Deploy Workflow
 # ============================================================================
-# 이 파일을 frontend 레포지토리의 .github/workflows/deploy.yml 로 복사하세요
 #
 # GitHub Secrets (Settings > Secrets and variables > Actions > Secrets):
 #   - AWS_ACCESS_KEY_ID: AWS IAM Access Key
 #   - AWS_SECRET_ACCESS_KEY: AWS IAM Secret Key
+#   - VITE_SLACK_CLIENT_ID
+#   - VITE_SLACK_REDIRECT_URI
 #
 # GitHub Variables (Settings > Secrets and variables > Actions > Variables):
 #   - S3_BUCKET_NAME: S3 버킷 이름 (예: bj-ranking-frontend-abc123)
@@ -45,6 +46,8 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: https://${{ vars.DOMAIN_NAME }}/api
+          VITE_SLACK_CLIENT_ID: ${{ secrets.VITE_SLACK_CLIENT_ID }}
+          VITE_SLACK_REDIRECT_URI: ${{ secrets.VITE_SLACK_REDIRECT_URI }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
