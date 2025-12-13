@@ -61,6 +61,7 @@ export async function apiFetch<T>(
     }
 
   } catch (networkError) {
+    console.error("Network error:", networkError);
 
     // fetch 자체가 실패한 경우만 홈으로 이동
     localStorage.clear();
