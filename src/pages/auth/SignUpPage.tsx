@@ -18,9 +18,9 @@ export default function SignUpPage() {
 
   const handleCheckBaekjoonId = async () => {
     if (!baekjoonId.trim()) {
-        setIdErrorMessage("백준 ID를 입력해주세요.");
-        setIsIdChecked(false);
-        return;
+      setIdErrorMessage("백준 ID를 입력해주세요.");
+      setIsIdChecked(false);
+      return;
     }
 
     try {
@@ -72,7 +72,7 @@ export default function SignUpPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
 
       <img
-        src ={subLogo}
+        src={subLogo}
         alt="sub logo"
         className="
           absolute top-6 left-6
@@ -80,7 +80,7 @@ export default function SignUpPage() {
           sm:w-[150px]       /* 태블릿 이상 */
           md:w-[180px]       /* 데스크탑 이상 */
         "
-      />   
+      />
 
       <h1 className="text-[28px] md:text-[32px] font-medium mb-12">
         회원가입
@@ -90,12 +90,13 @@ export default function SignUpPage() {
 
         {/* 이름 */}
         <div className="flex items-center mb-4">
-          <label className="w-[80px] text-[16px] font-medium text-black">
+          <label htmlFor="username" className="w-[80px] text-[16px] font-medium text-black">
             이름
           </label>
 
           <div className="relative w-full">
             <input
+              id="username"
               className="w-full h-[45px] border border-[#DADCE0] rounded-[4px] px-3 pr-10 placeholder:text-[#C4C8CC]"
               placeholder="이름을 입력해주세요."
               value={username}
@@ -121,16 +122,19 @@ export default function SignUpPage() {
         <div className="w-full">
           {/* 기존 UI는 절대 변경 X */}
           <div className="flex items-center mb-4">
-            <label className="w-[80px] text-[16px] font-medium text-black">
+            <label htmlFor="baekjoonId" className="w-[80px] text-[16px] font-medium text-black">
               백준 ID
             </label>
 
             <div className="flex items-center gap-2 w-full">
               <div className="relative flex-1">
                 <input
+                  id="baekjoonId"
                   className={`
                     w-full h-[45px] rounded-[4px] px-3 pr-10 placeholder:text-[#C4C8CC]
-                    ${idErrorMessage ? "border border-red-500" : "border border-[#DADCE0]"}
+                    ${idErrorMessage
+                      ? "border border-red-500 animate-[shake_0.35s_ease-in-out]"
+                      : "border border-[#DADCE0]"}
                   `}
                   placeholder="백준 ID를 입력해주세요."
                   value={baekjoonId}
@@ -191,10 +195,10 @@ export default function SignUpPage() {
 
         {/* 반 */}
         <div className="flex items-center mb-25">
-          <label className="w-[80px] text-[16px] font-medium text-black">
+          <label htmlFor="teamName" className="w-[80px] text-[16px] font-medium text-black">
             반
           </label>
-          <TeamDropDown teamName={teamName} setTeamName={setTeamName} />
+          <TeamDropDown id="teamName" teamName={teamName} setTeamName={setTeamName} />
         </div>
 
         {/* Slack 알림 */}
@@ -206,7 +210,7 @@ export default function SignUpPage() {
               onChange={(e) => setIsAlertAgreed(e.target.checked)}
               className="w-[18px] h-[18px] border border-[#DADCE0] rounded"
             />
-            Slack 알림 동의
+            <span>Slack 알림 동의</span>
           </label>
 
           <button

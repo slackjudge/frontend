@@ -1,5 +1,7 @@
 import { ApiResponse } from "@/api/client/httpClient";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -11,7 +13,7 @@ export async function reissueToken(): Promise<string | null> {
   if (!refreshToken) return null;
 
   try {
-    const res = await fetch("/oauth/reissue", {
+    const res = await fetch(`${API_BASE_URL}/oauth/reissue`, {
       method: "GET",
       headers: {
         refreshToken,

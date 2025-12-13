@@ -2,6 +2,9 @@
 import { handleJwtApiError, ApiError } from "@/api/errors/errorHandler";
 import { reissueToken } from "@/api/client/reissueToken";
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export interface ApiResponse<T> {
   success: boolean;
   errorCode: string | null;
@@ -25,7 +28,10 @@ export async function apiFetch<T>(
       headers.set("Authorization", `Bearer ${accessToken}`);
     }
 
-    const res = await fetch(path, { ...options, headers });
+    const res = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers,
+    });
     return res.json() as Promise<ApiResponse<T>>;
   }
 
@@ -41,7 +47,7 @@ export async function apiFetch<T>(
 
         if (!newToken) {
           localStorage.clear();
-          window.location.href = "/";
+          globalThis.location.href = "/";
           throw new Error("REFRESH_TOKEN_EXPIRED");
         }
 
@@ -55,10 +61,11 @@ export async function apiFetch<T>(
     }
 
   } catch (networkError) {
+    console.error("Network error:", networkError);
 
     // fetch 자체가 실패한 경우만 홈으로 이동
     localStorage.clear();
-    window.location.href = "/";
+    globalThis.location.href = "/";
 
     throw new Error("NETWORK_ERROR");
   }
