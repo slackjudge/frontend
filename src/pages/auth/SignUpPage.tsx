@@ -18,9 +18,9 @@ export default function SignUpPage() {
 
   const handleCheckBaekjoonId = async () => {
     if (!baekjoonId.trim()) {
-        setIdErrorMessage("백준 ID를 입력해주세요.");
-        setIsIdChecked(false);
-        return;
+      setIdErrorMessage("백준 ID를 입력해주세요.");
+      setIsIdChecked(false);
+      return;
     }
 
     try {
@@ -72,7 +72,7 @@ export default function SignUpPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
 
       <img
-        src ={subLogo}
+        src={subLogo}
         alt="sub logo"
         className="
           absolute top-6 left-6
@@ -80,7 +80,7 @@ export default function SignUpPage() {
           sm:w-[150px]       /* 태블릿 이상 */
           md:w-[180px]       /* 데스크탑 이상 */
         "
-      />   
+      />
 
       <h1 className="text-[28px] md:text-[32px] font-medium mb-12">
         회원가입
@@ -210,7 +210,7 @@ export default function SignUpPage() {
               onChange={(e) => setIsAlertAgreed(e.target.checked)}
               className="w-[18px] h-[18px] border border-[#DADCE0] rounded"
             />
-            Slack 알림 동의
+            <span>Slack 알림 동의</span>
           </label>
 
           <button
