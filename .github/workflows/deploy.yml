@@ -45,7 +45,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_API_URL: https://${{ vars.DOMAIN_NAME }}/api
+          VITE_API_BASE_URL: https://api.${{ vars.DOMAIN_NAME }}
           VITE_SLACK_CLIENT_ID: ${{ secrets.VITE_SLACK_CLIENT_ID }}
           VITE_SLACK_REDIRECT_URI: ${{ secrets.VITE_SLACK_REDIRECT_URI }}
 
