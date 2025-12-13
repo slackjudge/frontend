@@ -47,7 +47,7 @@ export async function apiFetch<T>(
 
         if (!newToken) {
           localStorage.clear();
-          window.location.href = "/";
+          globalThis.location.href = "/";
           throw new Error("REFRESH_TOKEN_EXPIRED");
         }
 
@@ -64,7 +64,7 @@ export async function apiFetch<T>(
 
     // fetch 자체가 실패한 경우만 홈으로 이동
     localStorage.clear();
-    window.location.href = "/";
+    globalThis.location.href = "/";
 
     throw new Error("NETWORK_ERROR");
   }
