@@ -2,11 +2,12 @@ import { TEAM_OPTIONS } from "@/constants/team";
 import { useState } from "react";
 
 interface TeamDropdownProps {
+  id?: string;
   teamName: string;
   setTeamName: (value: string) => void;
 }
 
-export default function TeamDropdown({ teamName, setTeamName }: TeamDropdownProps) {
+export default function TeamDropdown({ id, teamName, setTeamName }: TeamDropdownProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -14,6 +15,7 @@ export default function TeamDropdown({ teamName, setTeamName }: TeamDropdownProp
 
       {/* 선택박스 */}
       <button
+        id={id}
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full h-[45px] border border-[#DADCE0] rounded-[8px]

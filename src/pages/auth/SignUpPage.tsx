@@ -90,12 +90,13 @@ export default function SignUpPage() {
 
         {/* 이름 */}
         <div className="flex items-center mb-4">
-          <label className="w-[80px] text-[16px] font-medium text-black">
+          <label htmlFor="username" className="w-[80px] text-[16px] font-medium text-black">
             이름
           </label>
 
           <div className="relative w-full">
             <input
+              id="username"
               className="w-full h-[45px] border border-[#DADCE0] rounded-[4px] px-3 pr-10 placeholder:text-[#C4C8CC]"
               placeholder="이름을 입력해주세요."
               value={username}
@@ -121,17 +122,18 @@ export default function SignUpPage() {
         <div className="w-full">
           {/* 기존 UI는 절대 변경 X */}
           <div className="flex items-center mb-4">
-            <label className="w-[80px] text-[16px] font-medium text-black">
+            <label htmlFor="baekjoonId" className="w-[80px] text-[16px] font-medium text-black">
               백준 ID
             </label>
 
             <div className="flex items-center gap-2 w-full">
               <div className="relative flex-1">
                 <input
+                  id="baekjoonId"
                   className={`
                     w-full h-[45px] rounded-[4px] px-3 pr-10 placeholder:text-[#C4C8CC]
-                    ${idErrorMessage 
-                      ? "border border-red-500 animate-[shake_0.35s_ease-in-out]" 
+                    ${idErrorMessage
+                      ? "border border-red-500 animate-[shake_0.35s_ease-in-out]"
                       : "border border-[#DADCE0]"}
                   `}
                   placeholder="백준 ID를 입력해주세요."
@@ -193,10 +195,10 @@ export default function SignUpPage() {
 
         {/* 반 */}
         <div className="flex items-center mb-25">
-          <label className="w-[80px] text-[16px] font-medium text-black">
+          <label htmlFor="teamName" className="w-[80px] text-[16px] font-medium text-black">
             반
           </label>
-          <TeamDropDown teamName={teamName} setTeamName={setTeamName} />
+          <TeamDropDown id="teamName" teamName={teamName} setTeamName={setTeamName} />
         </div>
 
         {/* Slack 알림 */}
