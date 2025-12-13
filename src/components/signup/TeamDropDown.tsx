@@ -7,7 +7,7 @@ interface TeamDropdownProps {
   setTeamName: (value: string) => void;
 }
 
-export default function TeamDropdown({ id, teamName, setTeamName }: TeamDropdownProps) {
+export default function TeamDropdown({ id, teamName, setTeamName }: Readonly<TeamDropdownProps>) {
   const [open, setOpen] = useState(false);
 
   return (
