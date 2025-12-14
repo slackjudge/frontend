@@ -8,9 +8,9 @@ import HeatMapCalendar from "../components/mypage/HeatMapCalendar";
 import DailySummary from "../components/mypage/DailySummary";
 import ProblemListModal from "../components/mypage/ProblemListModal";
 
-// 타입 및 Mock 함수
-import { MyPageResponse } from "../types/mypage";
-import { getMockDashboard } from "../mock/mypage/myPageData";
+// 타입 및 실제 api 함수 
+import { MyPageData } from "../types/mypage"; //직접 데이터 타입 사용 
+import { getMyPageDashboard } from "../api/mypage/mypageApi"; // Api 함수 
 
 export default function MyPage() {
   // 상태 관리
@@ -19,11 +19,10 @@ export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // 공통 API 훅 사용 
-  const { data, isLoading, error, refetch } = useFetch<MyPageResponse["response"]>({
+  const { data, isLoading, error, refetch } = useFetch<MyPageData>({
     fetchFn: async () => {
       const { year, month } = getYearMonth(selectedDate);
-      const result = getMockDashboard(year, month, dateStr);
-      return result.response;
+      return await getMyPageDashboard(year, month, dateStr);
     },
     dependencies: [selectedDate, dateStr], // 날짜 변경시 재요청 
   });

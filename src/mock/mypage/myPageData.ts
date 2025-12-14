@@ -6,8 +6,7 @@ const MOCK_PROFILE: Profile = {
     username: "김마루",
     baekjoonId: "gr2147",
     tierLevel: 15,
-    totalScore: 1520,
-    myRank: 5
+    totalScore: 1520
   };
 
 const MOCK_GRASS: Grass[] = [
