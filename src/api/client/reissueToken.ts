@@ -14,7 +14,7 @@ export async function reissueToken(): Promise<string | null> {
 
   try {
     const res = await fetch(`${API_BASE_URL}/oauth/reissue`, {
-      method: "GET",
+      method: "POST",
       headers: {
         refreshToken,
       },
