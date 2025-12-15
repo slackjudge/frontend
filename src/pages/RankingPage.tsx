@@ -102,7 +102,6 @@ export default function RankingPage() {
       });
     });
 
-    console.log("유즈이펙트 1번 실행");
   }, [data, page]);
 
 
@@ -133,7 +132,6 @@ export default function RankingPage() {
     );
 
     observer.observe(el);
-    console.log("유즈이펙트 2번 실행");
     return () => observer.disconnect();
   }, []);
 
