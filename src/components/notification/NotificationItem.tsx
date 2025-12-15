@@ -1,4 +1,4 @@
-import speakerIcon from '@/assets/icons/icon_speaker.svg';
+import speakerIcon from '@/assets/icons/icon_speaker.png';
 
 interface NotificationItemProps {
     id: number;
