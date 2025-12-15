@@ -11,50 +11,60 @@ interface Notification {
 export default function NotificationList() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-    fetchInitial();
-  }, []);
+        const fetchNotifications = async () => {
+            try {
+                const res = await apiFetch<Notification[]>('/notification', {
+                method: 'GET',
+                });
+                setNotifications(res.data);
+            } catch (err) {
+                console.error('알림 조회 실패', err);
+                setError('알림을 불러오는 데 실패했습니다.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  const fetchInitial = async () => {
-    try {
-      const res = await apiFetch<Notification[]>('/notification', {
-        method: 'GET',
-      });
-      setNotifications(res.data);
-    } catch (error) {
-      console.error('알림 조회 실패', error);
-    } finally {
-      setLoading(false);
+        fetchNotifications();
+    }, []);
+
+    if (error) {
+        return (
+        <div className="text-sm text-red-500 py-4">
+            {error}
+        </div>
+        );
     }
-  };
 
-  if (loading) {
+    if (loading) {
+        return (
+        <div className="text-sm text-gray-400 py-4">
+            알림을 불러오는 중입니다...
+        </div>
+        );
+    }
+
+    if (notifications.length === 0) {
+        return (
+        <div className="text-sm text-gray-400 py-6">
+            아직 받은 알림이 없습니다.
+        </div>
+        );
+    }
+
     return (
-      <div className="text-sm text-gray-400 py-4">
-        알림을 불러오는 중입니다...
-      </div>
+        <ul className="flex flex-col items-center gap-2">
+            {notifications.map((item) => (
+                <NotificationItem
+                key={item.id}
+                id={item.id}
+                message={item.message}
+                date={item.date}
+                />
+            ))}
+        </ul>
     );
-  }
-
-  if (!loading && notifications.length === 0) {
-    return (
-      <div className="text-sm text-gray-400 py-6">
-        아직 받은 알림이 없습니다.
-      </div>
-    );
-  }
-
-  return (
-    <ul className="flex flex-col items-center gap-2">
-      {notifications.map((item) => (
-        <NotificationItem
-          key={item.id}
-          id={item.id}
-          message={item.message}
-          date={item.date}
-        />
-      ))}
-    </ul>
-  );
 }
