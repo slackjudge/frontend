@@ -1,3 +1,9 @@
+import NotificationList from '@/components/notification/NotificationList';
+
 export default function NotificationPage(){
-    return <text>알림 페이지</text>
+    return (
+        <section className="w-full flex justify-center pt-4">
+            <NotificationList />
+        </section>
+    );
 }

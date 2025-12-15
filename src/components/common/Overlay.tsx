@@ -17,7 +17,7 @@ export default function Overlay({ children }: { children: React.ReactNode }) {
                     : 'flex justify-center items-center min-h-screen'
             }>
             {showHeader && <Header />}
-            <main className={`${showHeader ? 'pt-20' : ''} flex flex-col justify-center items-center w-full`}>
+            <main className='flex flex-col justify-center items-center w-full'>
                 {children}
             </main>
         </div>
