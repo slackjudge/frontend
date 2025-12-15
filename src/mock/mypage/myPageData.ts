@@ -1,4 +1,5 @@
-import { MyPageResponse, Profile, Grass, SelectedDateDetail } from '../../types/mypage';
+import { MyPageData, Profile, Grass, SelectedDateDetail } from '../../types/mypage';
+import { ApiResponse } from '../../api/client/httpClient';
 // 유틸리티 함수
 import { getTodayISOString } from '../../utils/dateUtils';
 // 1. 공통 데이터 정의 (Database 역할)
@@ -6,8 +7,7 @@ const MOCK_PROFILE: Profile = {
     username: "김마루",
     baekjoonId: "gr2147",
     tierLevel: 15,
-    totalScore: 1520,
-    myRank: 5
+    totalScore: 1520
   };
 
 const MOCK_GRASS: Grass[] = [
@@ -114,7 +114,7 @@ const DETAILS_DB: Record<string, SelectedDateDetail> = {
  * @param month 조회할 월 (현재 Mock에서는 사용하지 않음, 향후 필터링에 사용 예정)
  * @param dateStr (선택) 클릭한 날짜. 없으면 오늘(2025-12-05) 기준
  */
-export const getMockDashboard = (_year: number, _month: number, dateStr?: string): MyPageResponse => {
+export const getMockDashboard = (_year: number, _month: number, dateStr?: string): ApiResponse<MyPageData> => {
     //1. 요청한 날짜(dateStr)가 있으면 그 날짜를, 없으면 오늘 날짜 구하기 
     //만약 db에 없는 날짜면, 빈 껍데기 리턴 
     const targetDate = dateStr || getTodayISOString();
@@ -130,9 +130,10 @@ export const getMockDashboard = (_year: number, _month: number, dateStr?: string
         problems: []
     };
     return {
-        isSuccess: true,
+        success: true,
+        errorCode: null,
         message: "마이페이지 조회 성공",
-        response: {
+        data: {
           profile: MOCK_PROFILE,
           grass: MOCK_GRASS, // 실제로는 year, month에 따라 필터링해야 하지만 Mock이라 전체 반환
           selectedDateDetail: selectedDetail
