@@ -11,14 +11,10 @@ import { useFetch } from "../hooks/useFetch";
 import { getRanking, type RankingPage as RankingPageType } from "../api/client/getRanking";
 import { isTeamName, type TeamName, type GroupType } from "../types/team";
 
-
-  const toTeamName = (v: unknown): TeamName => {
-  if (isTeamName(v)) {
-    return v;
-  }
-  return "BACKEND_FACE"; 
+const toTeamName = (v: unknown): TeamName => {
+  if (isTeamName(v)) return v;
+  return "BACKEND_FACE";
 };
-
 
 export default function RankingPage() {
   const [period, setPeriod] = useState<"day" | "week" | "month">("day");
@@ -33,7 +29,7 @@ export default function RankingPage() {
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const SIZE = 20;
 
-   const resetPaging = () => {
+  const resetPaging = () => {
     setRows([]);
     setPage(1);
     setHasMore(true);
@@ -42,8 +38,6 @@ export default function RankingPage() {
   const handlePeriodChange = (newPeriod: "day" | "week" | "month") => {
     resetPaging();
     setPeriod(newPeriod);
-    // 필요하면 period 변경 시 오늘로 되돌리려면 주석 해제
-    // setDate(new Date());
   };
 
   const handleGroupChange = (newGroup: GroupType) => {
@@ -55,7 +49,6 @@ export default function RankingPage() {
     resetPaging();
     setDate(newDate);
   };
-
 
   const buildQueryDateTime = (): Date => {
     const now = new Date();
@@ -71,8 +64,7 @@ export default function RankingPage() {
     return d;
   };
 
-
-    const { data, isLoading, error } = useFetch<RankingPageType>({
+  const { data, isLoading, error } = useFetch<RankingPageType>({
     fetchFn: async () => {
       return await getRanking({
         period,
@@ -87,19 +79,15 @@ export default function RankingPage() {
   });
 
 
-
-
-
-    // 응답 도착 시 누적 + hasMore 갱신
   useEffect(() => {
     if (!data) return;
 
     setHasMore(data.hasNext);
 
-  const mapped: RankingRowData[] = data.rows.map((row) => ({
-    ...row,
-    team: toTeamName(row.team), // string -> TeamName 변환
-  }));
+    const mapped: RankingRowData[] = data.rows.map((row) => ({
+      ...row,
+      team: toTeamName(row.team),
+    }));
 
     setRows((prev) => {
       const next = page === 1 ? mapped : [...prev, ...mapped];
@@ -114,7 +102,7 @@ export default function RankingPage() {
       });
     });
 
-        console.log("유즈이펙트 1번 실행");
+    console.log("유즈이펙트 1번 실행");
   }, [data, page]);
 
 
@@ -149,31 +137,26 @@ export default function RankingPage() {
     return () => observer.disconnect();
   }, []);
 
-
   // 첫 페이지부터 데이터가 없을 경우 -> Empty State 조건
-  const isEmpty = !isLoading && rows.length === 0 && hasMore === false;;
-
+  const isEmpty = !isLoading && rows.length === 0 && hasMore === false;
 
   return (
     <div className="flex w-full">
-
       {/* 왼쪽 영역 -> 달력 */}
       <div className="w-[320px] p-6 bg-white flex justify-center items-start h-fit sticky top-20">
-          <Calendar date={date} period={period} onDateChange={handleDateChange}/>
+        <Calendar date={date} period={period} onDateChange={handleDateChange} />
       </div>
 
       {/* 오른쪽 영역 -> 나머지 컴포넌트들 */}
       <div className="flex-1 flex flex-col items-center px-10 py-8">
-
         {/* 헤더 */}
         <div className="w-full max-w-5xl">
-
           <div className="flex justify-center items-center mb-4">
             <RankingDateDisplay period={period} date={date} />
           </div>
 
           <div className="flex items-center justify-between mb-6">
-            <RankingPeriodSelector value={period} onChange={handlePeriodChange}/>
+            <RankingPeriodSelector value={period} onChange={handlePeriodChange} />
             <RankingGroupSelector value={group} onChange={handleGroupChange} />
           </div>
         </div>
@@ -186,7 +169,7 @@ export default function RankingPage() {
             <RankingRow key={row.userId} row={row} />
           ))}
 
-          {/* 무한스크롤 div */}
+
           <div ref={loaderRef} className="h-10"></div>
 
           {isLoading && (
@@ -194,17 +177,17 @@ export default function RankingPage() {
           )}
 
           {error && (
-            <div className="text-center text-red-500 py-3">{error}</div>
+            <div className="text-center text-red-500 py-3">{String(error)}</div>
           )}
 
-           {/*데이터 자체가 없는 경우(정상) */}
+          {/* 데이터 자체가 없는 경우(정상) */}
           {isEmpty && (
             <div className="text-center text-gray-400 py-3">
               해당 날짜에는 랭킹 데이터가 없습니다.
             </div>
           )}
 
-          {/*데이터가 있었는데 더 가져올 게 없는 경우 */}
+          {/* 데이터가 있었는데 더 가져올 게 없는 경우 */}
           {!isLoading && !error && rows.length > 0 && !hasMore && (
             <div className="text-center text-gray-400 py-3">
               더 이상 데이터가 없습니다.
