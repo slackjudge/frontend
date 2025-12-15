@@ -6,7 +6,7 @@ interface NotificationItemProps {
     date: string;
 }
 
-export default function NotificationItem({id, message, date} : NotificationItemProps) {
+export default function NotificationItem({message, date} : NotificationItemProps) {
     return (
         <li className="w-[540px] bg-white rounded-xl px-4 py-3 shadow-sm">
             <div className="flex items-start gap-3">
