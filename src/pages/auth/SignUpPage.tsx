@@ -28,6 +28,7 @@ export default function SignUpPage() {
         baekjoonId: string;
         isBaekjoonId: boolean;
       }>(`/user/check?baekjoonId=${encodeURIComponent(baekjoonId)}`);
+    // }>(`/api/user/check?baekjoonId=${encodeURIComponent(baekjoonId)}`);
 
       if (res.data.isBaekjoonId) {
         setIsIdChecked(true);

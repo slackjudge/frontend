@@ -33,9 +33,11 @@ export async function getMyPageDashboard(
         params.append("date", date);
     }
 
-    // API 호출: GET /user/me?year=2025&month=12&date=2025-12-05
+    // API 호출: GET /api/user/me?year=2025&month=12&date=2025-12-05
     const response = await apiFetch<MyPageData>(
         `/user/me?${params.toString()}`
+        // `/api/user/me?${params.toString()}`
+        
     );
 
     return response.data;

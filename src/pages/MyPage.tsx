@@ -48,6 +48,12 @@ export default function MyPage() {
     setIsModalOpen(false);
   }, []);
 
+  // 로그아웃 핸들러 (UI만 구현, 기능은 추후 추가)
+  const handleLogout = useCallback((): void => {
+    // TODO: 로그아웃 기능 구현
+    console.log("로그아웃 클릭");
+  }, []);
+
   // 로딩 중 UI
   if (isLoading) {
     return <div className="flex justify-center p-20 text-gray-500">Loading...</div>;
@@ -113,7 +119,7 @@ export default function MyPage() {
         <div className="flex flex-1 min-h-[600px]">
           
           {/* 좌측: 캘린더 영역 (60% 너비) */}
-          <div className="w-[60%] py-12 px-8 border-r border-gray-200 flex flex-col items-center justify-start">
+          <div className="w-[60%] pt-24 pb-12 px-8 border-r border-gray-200 flex flex-col items-center justify-start">
             <HeatMapCalendar
               selectedDate={selectedDate}
               onDateChange={handleDateClick}
@@ -128,6 +134,29 @@ export default function MyPage() {
             onCountClick={handleOpenModal}
           />
           
+        </div>
+
+        {/* 가로 구분선 */}
+        <div className="w-[95%] mx-auto h-[1px] bg-gray-200"></div>
+
+        {/* ---------------- 하단: 로그아웃 버튼 영역 ---------------- */}
+        <div className="flex flex-col items-center justify-center py-8">
+          <button
+            onClick={handleLogout}
+            className="
+              px-8 py-3
+              bg-gradient-to-r from-blue-700 to-blue-500
+              text-white text-base font-medium
+              rounded-xl
+              shadow-sm
+              hover:shadow-md hover:opacity-90
+              active:scale-[0.97]
+              transition-all duration-200 ease-out
+              select-none
+            "
+          >
+            로그아웃
+          </button>
         </div>
       </div>
 
