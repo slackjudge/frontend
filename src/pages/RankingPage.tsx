@@ -89,19 +89,6 @@ export default function RankingPage() {
       team: toTeamName(row.team),
     }));
 
-    setRows((prev) => {
-      const next = page === 1 ? mapped : [...prev, ...mapped];
-
-      // userId 기준 중복 제거 (same key 방지)
-      const seen = new Set<number>();
-      return next.filter((r) => {
-        if (r.userId == null) return true;
-        if (seen.has(r.userId)) return false;
-        seen.add(r.userId);
-        return true;
-      });
-    });
-
   }, [data, page]);
 
 
