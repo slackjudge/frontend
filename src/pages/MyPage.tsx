@@ -11,6 +11,7 @@ import ProblemListModal from "../components/mypage/ProblemListModal";
 // 타입 및 실제 api 함수 
 import { MyPageData } from "../types/mypage"; //직접 데이터 타입 사용 
 import { getMyPageDashboard } from "../api/mypage/mypageApi"; // Api 함수 
+import { logout } from "@/api/client/logout";
 
 export default function MyPage() {
   // 상태 관리
@@ -48,10 +49,8 @@ export default function MyPage() {
     setIsModalOpen(false);
   }, []);
 
-  // 로그아웃 핸들러 (UI만 구현, 기능은 추후 추가)
-  const handleLogout = useCallback((): void => {
-    // TODO: 로그아웃 기능 구현
-    console.log("로그아웃 클릭");
+  const handleLogout = useCallback(async (): Promise<void> => {
+    await logout();
   }, []);
 
   // 로딩 중 UI
