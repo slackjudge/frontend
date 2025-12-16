@@ -89,6 +89,7 @@ export default function RankingPage() {
       team: toTeamName(row.team),
     }));
 
+   setRows((prev) => (page === 1 ? mapped : [...prev, ...mapped]));
   }, [data, page]);
 
 
