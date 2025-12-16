@@ -47,6 +47,8 @@ export async function getRanking(params: {
   const body = await apiFetch<RankingPage>(`/rank?${qs.toString()}`, { method: "GET" });
 
   // apiFetch 내부에서 success=false면 이미 ApiError를 throw하도록 되어 있음
- if (!body.data) throw new Error("EMPTY_RANKING_DATA");
+ if (!body.data) {
+   throw new Error("EMPTY_RANKING_DATA");
+ }
   return body.data;
 }
