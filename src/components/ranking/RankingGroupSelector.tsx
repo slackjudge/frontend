@@ -1,9 +1,6 @@
-export type GroupType =
-  | "FRONTEND_OFFLINE"
-  | "FRONTEND_ONLINE"
-  | "BACKEND_OFFLINE"
-  | "BACKEND_ONLINE"
-  | "ALL";
+import { TEAM_OPTIONS } from "../../constants/team";
+import type { GroupType } from "../../types/team";
+import { isGroupType } from "../../types/team";
 
 interface GroupSelectProps {
   value: GroupType;
@@ -14,7 +11,11 @@ export default function RankingGroupSelector({ value, onChange }: GroupSelectPro
   return (
     <select
       value={value}
-      onChange={(e) => onChange(e.target.value as GroupType)}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (isGroupType(v)) onChange(v);
+        else onChange("ALL"); 
+      }}
       className="
         w-52 px-3 py-2 border border-gray-300 rounded-lg
         text-sm text-gray-700 bg-white 
@@ -22,10 +23,11 @@ export default function RankingGroupSelector({ value, onChange }: GroupSelectPro
       "
     >
       <option value="ALL">전체</option>
-      <option value="FRONTEND_OFFLINE">프론트엔드 대면</option>
-      <option value="FRONTEND_ONLINE">프론트엔드 비대면</option>
-      <option value="BACKEND_OFFLINE">백엔드 대면</option>
-      <option value="BACKEND_ONLINE">백엔드 비대면</option>
+      {TEAM_OPTIONS.map((opt) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
     </select>
   );
 }
