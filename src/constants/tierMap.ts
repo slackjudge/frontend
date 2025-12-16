@@ -1,56 +1,39 @@
-export const tierMap = (() => {
-  const groups = ["bronze", "silver", "gold", "platinum", "diamond", "ruby"];
-  const map: Record<string, string> = {};
+// 배포 환경에서 티어 아이콘을 미리 불러오기 위해 glob 사용
+const tierAssets = import.meta.glob(
+  "/src/assets/icons/baekjoon/**/*.svg",
+  { eager: true, as: "url" }
+) as Record<string, string>;
 
-  // unrated 추가 (level 0)
-  map["unrated_0"] = `/src/assets/icons/baekjoon/unrated/unrated.svg`;
-
-  groups.forEach((group) => {
-    for (let i = 1; i <= 5; i++) {
-      const prefix = group[0]; // b, s, g, p, d, r
-      map[`${group}_${i}`] = `/src/assets/icons/baekjoon/${group}/${prefix}${i}.svg`;
-    }
-  });
-
-  return map;
-})();
+const GROUPS = ["bronze", "silver", "gold", "platinum", "diamond", "ruby"] as const;
+const UNRATED_KEY = "/src/assets/icons/baekjoon/unrated/unrated.svg";
 
 /**
- * 숫자 레벨(0-30)을 티어 이미지 경로로 변환하는 함수
- * 백준 티어 시스템:
- * - 0:  unrated 
- * - 1-5: Bronze (1=B5, 2=B4, 3=B3, 4=B2, 5=B1)
- * - 6-10: Silver (6=S5, 7=S4, 8=S3, 9=S2, 10=S1)
- * - 11-15: Gold (11=G5, 12=G4, 13=G3, 14=G2, 15=G1)
- * - 16-20: Platinum (16=P5, 17=P4, 18=P3, 19=P2, 20=P1)
- * - 21-25: Diamond (21=D5, 22=D4, 23=D3, 24=D2, 25=D1)
- * - 26-30: Ruby (26=R5, 27=R4, 28=R3, 29=R2, 30=R1)
- * 
- * @param tierLevel 0-30 사이의 티어 레벨 (0은 기본값/없음)
- * @returns 티어 이미지 경로 문자열
+ * 숫자 레벨(0-30)을 티어 이미지 URL로 변환
  */
 export const getTierImageUrl = (tierLevel: number): string => {
-  // level이 0이면 unrated 반환
+  // 0: unrated
   if (tierLevel === 0) {
-    return `/src/assets/icons/baekjoon/unrated/unrated.svg`;
+    return tierAssets[UNRATED_KEY] ?? "";
   }
 
-  // 유효하지 않은 범위면 빈 문자열 반환
+  // 범위 벗어나면 빈 값
   if (tierLevel < 0 || tierLevel > 30) {
     return "";
   }
 
-  const groups = ["bronze", "silver", "gold", "platinum", "diamond", "ruby"];
-  
-  // 티어 그룹 인덱스 계산 (0-5)
+  // 그룹 인덱스(0~5)
   const groupIndex = Math.floor((tierLevel - 1) / 5);
-  
-  // 그룹 내 레벨 계산 (1-5, 백준은 낮은 숫자가 높은 티어이므로 역순)
-  const levelInGroup = ((tierLevel - 1) % 5) + 1;
-  const level = 6 - levelInGroup; // 5->1, 4->2, 3->3, 2->4, 1->5
-  
-  const group = groups[groupIndex];
-  const prefix = group[0]; // b, s, g, p, d, r
-  
-  return `/src/assets/icons/baekjoon/${group}/${prefix}${level}.svg`;
+  const group = GROUPS[groupIndex];
+  if (!group) return tierAssets[UNRATED_KEY] ?? "";
+
+  // 그룹 내 레벨(1~5) -> 파일명은 b1~b5 형태인데
+  // 백준 tierLevel은 1이 B5, 5가 B1 이므로 역매핑 필요
+  const levelInGroup = ((tierLevel - 1) % 5) + 1; // 1..5
+  const level = 6 - levelInGroup;                 // 5..1
+  const prefix = group[0];                        // b,s,g,p,d,r
+
+  const key = `/src/assets/icons/baekjoon/${group}/${prefix}${level}.svg`;
+
+  // 혹시 누락된 아이콘이면 unrated로 fallback
+  return tierAssets[key] ?? (tierAssets[UNRATED_KEY] ?? "");
 };
