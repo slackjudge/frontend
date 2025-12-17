@@ -28,7 +28,6 @@ export default function SignUpPage() {
         baekjoonId: string;
         isBaekjoonId: boolean;
       }>(`/user/check?baekjoonId=${encodeURIComponent(baekjoonId)}`);
-    // }>(`/api/user/check?baekjoonId=${encodeURIComponent(baekjoonId)}`);
 
       if (res.data.isBaekjoonId) {
         setIsIdChecked(true);
@@ -50,7 +49,6 @@ export default function SignUpPage() {
     if (!teamName) return alert("반을 선택해주세요.");
 
     try {
-      // await apiFetch("/user/signUp", {
       await apiFetch("/user/signUp", {
         method: "POST",
         body: JSON.stringify({
@@ -61,7 +59,6 @@ export default function SignUpPage() {
         }),
       });
 
-      // 성공 시 이동
       navigate("/main/ranking", { replace: true });
 
     } catch (err) {

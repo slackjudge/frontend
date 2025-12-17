@@ -20,7 +20,6 @@
 			"@/*": ["src/*"]
 		},
 
-			// JSX 옵션
 		"jsx": "react-jsx"
 	},
 	"include": ["src", "vite.config.ts"]

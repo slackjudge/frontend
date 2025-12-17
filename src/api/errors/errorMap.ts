@@ -1,8 +1,6 @@
 export const ErrorCodes = {
-  // Refresh Token 관련 (만료, 위변조, 없음 등)
     REFRESH_TOKEN_EXPIRED: ["AUTH_005", "AUTH_006", "AUTH_007"] as readonly string[],
 
-  // Access Token 관련 (만료, 유효하지 않음 등)
     ACCESS_TOKEN_INVALID: ["AUTH_003", "AUTH_004"] as readonly string[],
 } as const;
 

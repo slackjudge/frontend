@@ -22,11 +22,9 @@ export default function SlackCallbackPage() {
 
         const { accessToken, refreshToken, registeredUser } = res.data;
 
-        // 토큰 저장
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
 
-        // 회원가입 완료한 사용자 → 랭킹 페이지 / 신규 회원 → 회원가입 페이지
         navigate(registeredUser ? "/main/ranking" : "/sign-up", {
           replace: true,
         });
