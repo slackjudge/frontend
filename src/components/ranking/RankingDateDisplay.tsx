@@ -3,6 +3,10 @@ type RankingDateDisplayProps = {
   date: Date;
 };
 
+/**
+ * author : 박준희
+ */
+
 export default function RankingDateDisplay({ period, date }: RankingDateDisplayProps) {
   
   const getDailyLabel = () => {

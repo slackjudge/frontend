@@ -1,7 +1,9 @@
 import { getTierImageUrl } from "../../constants/tierMap";
 import { getTeamLabel, type TeamName } from "@/types/team";
 
-
+/**
+ * author : 박준희
+ */
 export interface RankingRowData {
   userId: number;
   rank: number;

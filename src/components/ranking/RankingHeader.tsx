@@ -1,3 +1,6 @@
+/**
+ * author : 박준희
+ */
 export default function RankingHeader() {
   return (
     <div className="w-full grid grid-cols-7 text-gray-500 text-sm py-3 border-y">
