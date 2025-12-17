@@ -2,6 +2,9 @@ interface RankingPeriodSelectorProps {
   value: "day" | "week" | "month";
   onChange: (value: "day" | "week" | "month") => void;
 }
+/**
+ * author : 박준희
+ */
 
 export default function RankingPeriodSelector({
   value,

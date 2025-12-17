@@ -1,3 +1,6 @@
+/**
+ * author : 박준희
+ */
 export interface TeamOption {
   value: string;
   label: string;

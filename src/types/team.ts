@@ -1,3 +1,6 @@
+/**
+ * author : 박준희
+ */
 export const TEAM_NAMES = [
   "FRONTEND_FACE",
   "FRONTEND_NON_FACE",

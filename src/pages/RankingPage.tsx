@@ -11,6 +11,9 @@ import { useFetch } from "../hooks/useFetch";
 import { getRanking, type RankingPage as RankingPageType } from "../api/client/getRanking";
 import { isTeamName, type TeamName, type GroupType } from "../types/team";
 
+/**
+ * author : 박준희
+ */
 const toTeamName = (v: unknown): TeamName => {
   if (isTeamName(v)) return v;
   return "BACKEND_FACE";
@@ -21,7 +24,6 @@ export default function RankingPage() {
   const [date, setDate] = useState(new Date());
   const [group, setGroup] = useState<GroupType>("ALL");
 
-  // 스크롤
   const [page, setPage] = useState(1);
   const [rows, setRows] = useState<RankingRowData[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -123,19 +125,16 @@ export default function RankingPage() {
     return () => observer.disconnect();
   }, []);
 
-  // 첫 페이지부터 데이터가 없을 경우 -> Empty State 조건
   const isEmpty = !isLoading && rows.length === 0 && hasMore === false;
 
   return (
     <div className="flex w-full">
-      {/* 왼쪽 영역 -> 달력 */}
       <div className="w-[320px] p-6 bg-white flex justify-center items-start h-fit sticky top-20">
         <Calendar date={date} period={period} onDateChange={handleDateChange} />
       </div>
 
-      {/* 오른쪽 영역 -> 나머지 컴포넌트들 */}
       <div className="flex-1 flex flex-col items-center px-10 py-8">
-        {/* 헤더 */}
+
         <div className="w-full max-w-5xl">
           <div className="flex justify-center items-center mb-4">
             <RankingDateDisplay period={period} date={date} />
@@ -147,7 +146,6 @@ export default function RankingPage() {
           </div>
         </div>
 
-        {/* 테이블 + 무한스크롤 */}
         <div className="w-full max-w-5xl">
           <RankingHeader />
 
@@ -166,14 +164,12 @@ export default function RankingPage() {
             <div className="text-center text-red-500 py-3">{String(error)}</div>
           )}
 
-          {/* 데이터 자체가 없는 경우(정상) */}
           {isEmpty && (
             <div className="text-center text-gray-400 py-3">
               해당 날짜에는 랭킹 데이터가 없습니다.
             </div>
           )}
 
-          {/* 데이터가 있었는데 더 가져올 게 없는 경우 */}
           {!isLoading && !error && rows.length > 0 && !hasMore && (
             <div className="text-center text-gray-400 py-3">
               더 이상 데이터가 없습니다.

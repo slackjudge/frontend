@@ -7,6 +7,10 @@ interface GroupSelectProps {
   onChange: (value: GroupType) => void;
 }
 
+/**
+ * author : 박준희
+ */
+
 export default function RankingGroupSelector({ value, onChange }: GroupSelectProps) {
   return (
     <select
