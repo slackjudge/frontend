@@ -8,6 +8,18 @@ interface Notification {
   date: string;
 }
 
+/*==========================
+*
+* 서버에서 알림 목록을 조회하여 리스트로 렌더링하는 컴포넌트
+*
+* @parm -
+* @return JSX.Element 알림 목록 UI
+* @author 김경민
+* @version 1.0.0
+* @date 2025-12-15
+*
+==========================**/
+
 export default function NotificationList() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);

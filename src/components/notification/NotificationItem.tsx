@@ -6,6 +6,19 @@ interface NotificationItemProps {
     date: string;
 }
 
+/*==========================
+*
+* 단일 알림 아이템을 화면에 표시하는 컴포넌트
+*
+* @parm message 알림 메시지 내용
+* @parm date 알림 발생 시각 문자열
+* @return JSX.Element 알림 아이템 UI
+* @author 김경민
+* @version 1.0.0
+* @date 2025-12-15
+*
+==========================**/
+
 export default function NotificationItem({message, date} : NotificationItemProps) {
     return (
         <li className="w-[540px] bg-white rounded-xl px-4 py-3 shadow-sm">
