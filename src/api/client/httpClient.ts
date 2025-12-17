@@ -56,14 +56,12 @@ export async function apiFetch<T>(
         return body;
       }
 
-      // 다른 ApiError는 그대로 throw → OUTER catch로 가지 않고 상위로 전달됨
       throw err;
     }
 
   } catch (networkError) {
     console.error("Network error:", networkError);
 
-    // fetch 자체가 실패한 경우만 홈으로 이동
     localStorage.clear();
     globalThis.location.href = "/";
 

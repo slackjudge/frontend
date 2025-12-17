@@ -15,7 +15,6 @@ export default function LoginPage() {
       min-h-screen flex flex-col items-center justify-center
       bg-white px-4
     ">
-      {/* 로고 */}
       <img
         src={mainLogo}
         alt="Slack Judge"
@@ -25,7 +24,6 @@ export default function LoginPage() {
         "
       />
 
-      {/* 로그인 버튼 */}
       <SlackLoginButton onClick={handleSlackLogin} />
     </div>
   );

@@ -16,14 +16,11 @@ export class ApiError extends Error {
 }
 
 export function handleJwtApiError<T>(body: ApiResponse<T>): void {
-  // 성공이면 처리 안 함
   if (body.success) return;
 
-  // ⬇ errorCode를 완전히 타입 안전하게 정규화한다.
   const errorCode: string | undefined =
     typeof body.errorCode === "string" ? body.errorCode : undefined;
 
-  // errorType 분류
   const type = classifyError(errorCode);
 
   switch (type) {
