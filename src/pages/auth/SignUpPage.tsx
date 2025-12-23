@@ -27,15 +27,25 @@ export default function SignUpPage() {
       const res = await apiFetch<{
         baekjoonId: string;
         isBaekjoonId: boolean;
+        isUsed:  boolean;
       }>(`/user/check?baekjoonId=${encodeURIComponent(baekjoonId)}`);
 
-      if (res.data.isBaekjoonId) {
-        setIsIdChecked(true);
-        setIdErrorMessage("");
-      } else {
+      const { isBaekjoonId, isUsed } = res.data;
+
+      if (!isBaekjoonId) {
         setIsIdChecked(false);
         setIdErrorMessage("입력하신 백준 ID가 올바르지 않습니다");
+        return;
       }
+
+      if (isUsed) {
+        setIsIdChecked(false);
+        setIdErrorMessage("이미 가입된 백준 ID입니다");
+        return;
+      }
+
+      setIsIdChecked(true);
+      setIdErrorMessage("");
     } catch {
       setIsIdChecked(false);
       setIdErrorMessage("백준 ID 확인 중 오류가 발생했습니다.");
