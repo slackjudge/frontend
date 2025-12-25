@@ -6,14 +6,16 @@ type Props = {
 };
 
 const formatUpdateTime = (value: string) => {
-  const m = value.match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
-  if (!m) return `${value} KST 기준`;
+  const date = new Date(value);
+  if (isNaN(date.getTime())) {
+    return `${value} KST 기준`;
+  }
 
-  const yyyy = Number(m[1]);
-  const mm = Number(m[2]);
-  const dd = Number(m[3]);
-  const hh = m[4];
-  const mi = m[5];
+  const yyyy = date.getFullYear();
+  const mm = date.getMonth() + 1;
+  const dd = date.getDate();
+  const hh = String(date.getHours()).padStart(2, '0');
+  const mi = String(date.getMinutes()).padStart(2, '0');
 
   return `${yyyy}년 ${mm}월 ${dd}일 ${hh}:${mi} KST 기준`;
 };

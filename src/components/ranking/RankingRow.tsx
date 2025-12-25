@@ -1,6 +1,6 @@
 import { getTierImageUrl } from "../../constants/tierMap";
 import { getTeamLabel, type TeamName } from "@/types/team";
-import newPng from "../../assets/images/new444.png";
+import newPng from "@/assets/images/new444.png";
 
 /**
  * author : 박준희
