@@ -6,6 +6,7 @@ import RankingDateDisplay from "../components/ranking/RankingDateDisplay";
 import RankingGroupSelector from "../components/ranking/RankingGroupSelector";
 import Calendar from "../components/common/Calendar";
 import RankingHeader from "../components/ranking/RankingHeader";
+import RankingUpdateTime from "../components/ranking/RankingUpdateTime";
 
 import { useFetch } from "../hooks/useFetch";
 import { getRanking, type RankingPage as RankingPageType } from "../api/client/getRanking";
@@ -27,6 +28,7 @@ export default function RankingPage() {
   const [page, setPage] = useState(1);
   const [rows, setRows] = useState<RankingRowData[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [updateTime, setUpdateTime] = useState<string>(""); 
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const SIZE = 20;
@@ -85,6 +87,7 @@ export default function RankingPage() {
     if (!data) return;
 
     setHasMore(data.hasNext);
+    setUpdateTime(data.updateTime);
 
     const mapped: RankingRowData[] = data.rows.map((row) => ({
       ...row,
@@ -141,7 +144,11 @@ export default function RankingPage() {
           </div>
 
           <div className="flex items-center justify-between mb-6">
-            <RankingPeriodSelector value={period} onChange={handlePeriodChange} />
+            <div className="flex items-end gap-3">
+             <RankingPeriodSelector value={period} onChange={handlePeriodChange} />
+             <RankingUpdateTime updateTime={updateTime} />
+            </div>
+      
             <RankingGroupSelector value={group} onChange={handleGroupChange} />
           </div>
         </div>

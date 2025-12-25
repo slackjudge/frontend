@@ -16,10 +16,12 @@ export interface RankingRow {
   baekjoonId: string;
   team: string;
   diff: number;
+  newUser: boolean;
 }
 
 export interface RankingPage {
   hasNext: boolean;
+  updateTime: string;
   rows: RankingRow[];
 }
 
