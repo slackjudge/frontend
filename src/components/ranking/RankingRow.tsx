@@ -1,5 +1,6 @@
 import { getTierImageUrl } from "../../constants/tierMap";
 import { getTeamLabel, type TeamName } from "@/types/team";
+import newPng from "@/assets/images/new444.png";
 
 /**
  * author : 박준희
@@ -14,6 +15,7 @@ export interface RankingRowData {
   baekjoonId: string;
   team: TeamName;
   diff: number;
+  newUser: boolean;
 }
 
 interface RankingRowProps {
@@ -22,12 +24,26 @@ interface RankingRowProps {
 
 const RankingRow = ({ row }: RankingRowProps) => {
   return (
-<div className="grid grid-cols-7 items-center py-4 border-b border-gray-200 text-sm">
+<div 
+  className={[
+    "relative grid grid-cols-7 items-center py-4 border-b text-sm",
+    row.newUser
+      ? "border-green-100 bg-gradient-to-r from-green-100/80 to-transparent"
+      : "border-blue-200",
+  ].join(" ")}
+>
+<div className="relative text-center">
+  {row.newUser && (
+    <img
+      src={newPng}
+      alt="new"
+      className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 object-contain"
+    />
+  )}
+  <span className="tabular-nums">{row.rank}등</span>
+</div>
 
-
-  <div className="text-center">{row.rank}등</div>
-
-  <div className="flex items-center gap-2 pl-3">
+  <div className="flex items-center gap-2">
     <img src={getTierImageUrl(row.tier)} className="w-5 h-5" />
     <span>{row.name}</span>
   </div>
