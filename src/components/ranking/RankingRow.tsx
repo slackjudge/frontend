@@ -28,8 +28,8 @@ const RankingRow = ({ row }: RankingRowProps) => {
   className={[
     "relative grid grid-cols-7 items-center py-4 border-b text-sm",
     row.newUser
-      ? "border-green-100 bg-gradient-to-r from-green-100/80 to-transparent"
-      : "border-gray-500",
+      ? "border-gray-200 bg-gradient-to-r from-green-100/80 to-transparent"
+      : "border-gray-200",
   ].join(" ")}
 >
 <div className="relative text-center">
