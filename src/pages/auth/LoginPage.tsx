@@ -6,7 +6,7 @@ export const SLACK_CLIENT_ID = import.meta.env.VITE_SLACK_CLIENT_ID;
 export const SLACK_REDIRECT_URI = import.meta.env.VITE_SLACK_REDIRECT_URI;
 
 const INVITE_URL =
-  "https://join.slack.com/t/slackjudge/shared_invite/zt-3jvozgq6d-~pNce8kQdm6SFy4InCmryA";
+  "https://join.slack.com/t/slackjudge/shared_invite/zt-3n02hl31s-akvN0m0pU1Cy4eFBFJCxVw";
 
 export default function LoginPage() {
     
